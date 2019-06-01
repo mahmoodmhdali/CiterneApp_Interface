@@ -1,0 +1,83 @@
+<div class="m-333">
+  <!-- <span fxFlex></span> -->
+  <button mat-raised-button class="mb-05" color="primary" (click)="openPopUp({}, true)">Add Class</button>
+</div>
+<mat-card class="p-0" [@animate]="{value:'*',params:{y:'50px',delay:'300ms'}}">
+  <mat-card-content class="p-0">
+    <ngx-datatable
+      class="material ml-0 mr-0"
+      [rows]="items"
+      [columnMode]="'flex'"
+      [headerHeight]="50"
+      [footerHeight]="50"
+      [externalPaging]="true"
+      [externalSorting]="true"
+      (page)="handlePageChange($event)"
+      [loadingIndicator]="loadingIndicator"
+      [count]="totalItems"
+      [limit]="recordsPerPageValue"
+      [rowHeight]="'auto'">
+      <ngx-datatable-column name="Name" [flexGrow]="1">
+        <ng-template let-row="row" ngx-datatable-cell-template>
+          {{ row?.title }}
+        </ng-template>
+      </ngx-datatable-column>
+      <ngx-datatable-column name="Category" [flexGrow]="1">
+        <ng-template let-row="row" ngx-datatable-cell-template>
+          {{ row?.eventClassCategory.name }}
+        </ng-template>
+      </ngx-datatable-column>
+      <ngx-datatable-column name="Author" [flexGrow]="1">
+        <ng-template let-row="row" ngx-datatable-cell-template>
+          {{ row?.profileCollection[0].name }} {{ row?.profileCollection.length > 1 ? ' & ' : '' }} {{
+          row?.profileCollection.length > 1 ?
+          row?.profileCollection.length - 1 + ' Other' : '' }} {{row?.profileCollection.length > 2 ? 's':''}}
+        </ng-template>
+      </ngx-datatable-column>
+      <ngx-datatable-column name="Schedules" [flexGrow]="1.5">
+        <ng-template let-row="row" ngx-datatable-cell-template>
+          {{ row?.eventClassSchedules[0].classDayIndex == 1 ? 'Monday' : '' }}
+          {{ row?.eventClassSchedules[0].classDayIndex == 2 ? 'Tuesday' : '' }}
+          {{ row?.eventClassSchedules[0].classDayIndex == 3 ? 'Wednesday' : '' }}
+          {{ row?.eventClassSchedules[0].classDayIndex == 4 ? 'Thursday' : '' }}
+          {{ row?.eventClassSchedules[0].classDayIndex == 5 ? 'Friday' : '' }}
+          {{ row?.eventClassSchedules[0].classDayIndex == 6 ? 'Saturday' : '' }}
+          {{ row?.eventClassSchedules[0].classDayIndex == 7 ? 'Sunday' : '' }}
+          {{ row?.eventClassSchedules[0].time | date:'shortTime' }}
+          {{ row?.eventClassSchedules.length > 1 ? ' & ' : '' }}
+          {{ row?.eventClassSchedules.length > 1 ?
+          row?.eventClassSchedules.length - 1 + ' Other' : '' }} {{row?.eventClassSchedules.length > 2 ? 's':''}}
+        </ng-template>
+      </ngx-datatable-column>
+      <ngx-datatable-column name="Participants" [flexGrow]="0.8">
+        <ng-template let-row="row" ngx-datatable-cell-template>
+          {{ row?.numberOfParticipants }} participant
+        </ng-template>
+      </ngx-datatable-column>
+      <ngx-datatable-column name="Index" [flexGrow]="0.3">
+        <ng-template let-row="row" ngx-datatable-cell-template>
+          {{ row?.eventIndex }}
+        </ng-template>
+      </ngx-datatable-column>
+      <ngx-datatable-column name="Create Date" [flexGrow]="0.7">
+        <ng-template let-row="row" ngx-datatable-cell-template>
+          {{ row?.createdDate | date }}
+        </ng-template>
+      </ngx-datatable-column>
+      <ngx-datatable-column name="Actions" [flexGrow]="0.7">
+        <ng-template let-row="row" ngx-datatable-cell-template>
+          <button mat-icon-button mat-sm-button matTooltip="Edit Class Images" color="primary" class="mr-1"
+                  (click)="openImagesPopUp(row)">
+            <mat-icon>add_a_photo</mat-icon>
+          </button>
+          <button mat-icon-button matTooltip="Edit Class" mat-sm-button color="primary" class="mr-1" (click)="openPopUp(row)">
+            <mat-icon>edit</mat-icon>
+          </button>
+          <button mat-icon-button matTooltip="Delete Event" mat-sm-button color="warn" (click)="openDeletePopUp(row.id)">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </ng-template>
+      </ngx-datatable-column>
+    </ngx-datatable>
+  </mat-card-content>
+</mat-card>

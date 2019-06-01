@@ -1,0 +1,29 @@
+{
+  "API_CONFIG": {
+    "API_PROTOCOL": "http",
+    "API_IP": "localhost",
+    "API_PORT": "8084",
+    "API_PATH": "CiterneApp"
+  },
+  "WEB_CONFIG": {
+    "ENABLE_LOGS": false
+  },
+  "TOKENS_CONFIG": {
+    "TOKEN_NAME": "token",
+    "REFRESH_TOKEN_NAME": "refreshtoken"
+  },
+  "RESPONSE_CODE": {
+    "SUCCESS": 0,
+    "MISSING_PARAMETERS": "-1",
+    "PARAMETERS_VALIDATION_ERROR": "-2",
+    "UNIQUE_CONSTRAINT_VIOLATION": "-3",
+    "ENTITY_NOT_FOUND": "-4",
+    "EXCEPTION_OCCURED": "-5",
+    "UNAUTHORIZED_USER_ACTION": "-6",
+    "WRONG_USER_PASSWORD": "-7",
+    "ALERT": "-8"
+  },
+  "SNACKBAR_TIMEOUT": 3000,
+  "NOTIFICATION_REFRESH_RATE": 60000,
+  "REFRESH_DASHBOARD": 200000
+}

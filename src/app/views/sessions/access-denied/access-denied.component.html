@@ -1,0 +1,26 @@
+<div class="page-wrap height-100 default-bg">
+  <div class="app-error">
+    <div class="fix">
+      <mat-icon class="error-icon" color="warn">warning</mat-icon>
+      <div class="error-text">
+        <h1 class="error-title">403</h1>
+        <div class="error-subtitle">Access Denied!</div>
+      </div>
+    </div>
+    <div class="error-actions">
+      <button
+        style="margin-right: 15px;"
+        mat-raised-button
+        color="primary"
+        class="mb-1"
+        (click)="navigateToHomePage()">Back to Home Page
+      </button>
+      <button
+        style="margin-left: 15px;"
+        mat-raised-button
+        color="warn"
+        (click)="signOut()">Sign Out
+      </button>
+    </div>
+  </div>
+</div>

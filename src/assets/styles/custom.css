@@ -1,0 +1,22 @@
+.datatable-header {
+  background-color: #ececec;
+}
+
+.datatable-header-cell-label, .datatable-header-cell-template-wrap {
+  color: steelblue;
+  font-size: 14px;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.mat-card:not([class*=mat-elevation-z]) {
+  box-shadow: 0 5px 5px -3px rgba(0,0,0,.2), 0 8px 10px 1px rgba(0,0,0,.14), 0 3px 14px 2px rgba(0,0,0,.12) !important;
+}
+
+.ngx-datatable.material{
+  box-shadow: 0 5px 5px -3px rgba(0,0,0,.2), 0 8px 10px 1px rgba(0,0,0,.14), 0 3px 14px 2px rgba(0,0,0,.12) !important;
+}
+
+.datatable-row-odd {
+  background-color: #eee;
+}

@@ -1,0 +1,219 @@
+<mat-card class="p-0">
+  <mat-card-title class="">
+    <div class="card-title-text">New Report</div>
+    <mat-divider></mat-divider>
+  </mat-card-title>
+  <mat-card-content>
+    <div *ngIf="modelLoaded != 2">
+      <div class="pb-1 text-center">
+        <p class="text-muted pt-1">{{'Load Data' | translate}}</p>
+        <mat-progress-spinner
+          [color]="'primary'"
+          style="margin:0 auto;"
+          [mode]="'indeterminate'">
+        </mat-progress-spinner>
+      </div>
+    </div>
+    <div *ngIf="modelLoaded == 2">
+      <form #form="ngForm" [formGroup]="basicForm" (submit)="submitForm()">
+        <div fxLayout="row wrap">
+          <input id="id" [formControl]="basicForm.controls['id']" type="hidden">
+          <div fxFlex="50" class="pb-1 pr-1">
+            <mat-form-field class="full-width">
+              <input
+                matInput
+                name="name"
+                [formControl]="basicForm.controls['name']"
+                placeholder="Report Name">
+            </mat-form-field>
+            <small
+              *ngIf="basicForm.controls['name'].hasError('serverValidation') && basicForm.controls['name'].touched"
+              class="form-error-msg"> {{basicForm.controls['name'].errors.serverValidation}}
+            </small>
+            <small
+              *ngIf="basicForm.controls['name'].hasError('required') && basicForm.controls['name'].touched"
+              class="form-error-msg"> Report name is required
+            </small>
+          </div>
+          <div fxFlex="50" class="pb-1 pr-1">
+            <mat-form-field class="full-width">
+              <mat-select placeholder="{{'Styles' | translate}}" [formControl]="reportStyleCollection"
+                          [(ngModel)]="selectedStyleValues" (change)="styleSelection()" multiple>
+                <mat-select-trigger>
+            <span *ngIf="reportStyleCollection.value?.length > 1; else oneGroup" class="example-additional-selection">
+              {{reportStyleCollection.value.length}} {{'Styles Selected' | translate}}
+            </span>
+                  <ng-template #oneGroup>
+              <span class="example-additional-selection">
+                {{reportStyleCollection.value.length}} {{'Style selected' | translate}}
+              </span>
+                  </ng-template>
+                </mat-select-trigger>
+                <mat-option [disabled]="!editable" *ngFor="let style of reportStyleCollectionList" [value]="style.id">{{style.name}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+            <small
+              *ngIf="basicForm.controls['reportStyleCollection'].hasError('required') && basicForm.controls['reportStyleCollection'].touched"
+              class="form-error-msg"> {{'At least one style should be selected' | translate}}
+            </small>
+          </div>
+          <div fxFlex="50" class="pb-1 pr-1" *ngIf="showChartTitle">
+            <mat-form-field class="full-width">
+              <input
+                matInput
+                name="chartTitle"
+                [formControl]="basicForm.controls['chartTitle']"
+                placeholder="Chart Title">
+            </mat-form-field>
+            <small
+              *ngIf="basicForm.controls['chartTitle'].hasError('serverValidation') && basicForm.controls['chartTitle'].touched"
+              class="form-error-msg"> {{basicForm.controls['chartTitle'].errors.serverValidation}}
+            </small>
+            <small
+              *ngIf="basicForm.controls['chartTitle'].hasError('required') && basicForm.controls['chartTitle'].touched"
+              class="form-error-msg"> Chart Title is required
+            </small>
+          </div>
+          <div fxFlex="50" class="pb-1 pr-1" *ngIf="showChartTitle">
+            <mat-form-field class="full-width">
+              <input
+                matInput
+                name="chartSubTitle"
+                [formControl]="basicForm.controls['chartSubTitle']"
+                placeholder="Chart Subtitle">
+            </mat-form-field>
+            <small
+              *ngIf="basicForm.controls['chartSubTitle'].hasError('serverValidation') && basicForm.controls['chartSubTitle'].touched"
+              class="form-error-msg"> {{basicForm.controls['chartSubTitle'].errors.serverValidation}}
+            </small>
+            <small
+              *ngIf="basicForm.controls['chartSubTitle'].hasError('required') && basicForm.controls['chartSubTitle'].touched"
+              class="form-error-msg"> Chart Subtitle is required
+            </small>
+          </div>
+          <div fxFlex="100" class="pb-1 pr-1">
+            <mat-form-field class="full-width">
+              <textarea
+                matInput
+                [formControl]="basicForm.controls['procName']"
+                placeholder="Data Query">
+              </textarea>
+            </mat-form-field>
+            <small
+              *ngIf="basicForm.controls['procName'].hasError('required') && basicForm.controls['procName'].touched"
+              class="form-error-msg"> Query is required
+            </small>
+          </div>
+          <div fxFlex="100" *ngIf="editable" class="pr-1 pb-1">
+            <button type="button" mat-raised-button color="primary" (click)="addFilterListControl()">
+              <mat-icon>playlist_add</mat-icon>
+              {{'Add Filter' | translate}}
+            </button>
+          </div>
+          <ng-container *ngFor="let filtersCtrl of selectedReportFilters; let i = index" formArrayName="reportFilters">
+            <ng-container [formGroupName]="i">
+              <div fxFlex="7" class="pt-1 pl-1">
+                <mat-icon
+                  *ngIf="editable"
+                  (click)="removeFilter(i)"
+                  style="cursor:pointer;"
+                  class="cursor-pointer mat-color-warn ">
+                  remove_circle_outline
+                </mat-icon>
+              </div>
+              <div fxFlex="31" class="pb-1 pr-1">
+                <mat-form-field class="full-width">
+                  <input
+                    matInput
+                    name="reportField"
+                    formControlName="reportField"
+                    placeholder="{{'Database Field Name' | translate}}">
+                </mat-form-field>
+              </div>
+              <div fxFlex="31" class="pb-1 pr-1">
+                <mat-form-field class="full-width">
+                  <input
+                    matInput
+                    name="displayName"
+                    formControlName="displayName"
+                    placeholder="{{'Display Name' | translate}}">
+                </mat-form-field>
+              </div>
+              <div fxFlex="31" class="pb-1 pr-1">
+                <mat-form-field class="full-width">
+                  <mat-select placeholder="{{'Field Type' | translate}}" name="fieldType"
+                              formControlName="fieldType" (change)="onFieldType(i)">
+                    <mat-option [disabled]="!editable" *ngFor="let filterType of filterTypes"
+                                [value]="filterType.value">
+                      {{filterType.value}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+              <div fxFlex="7" class="pt-1 pl-1" *ngIf="showSelectQuery[i]">
+
+              </div>
+              <div fxFlex="93" class="pb-1 pr-1" *ngIf="showSelectQuery[i]">
+                <!--<div fxFlex="100" fxLayout="row" class="pr-1 full-width" *ngIf="showSelectQuery[i]">-->
+                <mat-form-field class="full-width">
+                  <input
+                    matInput
+                    name="selectQuery"
+                    formControlName="selectQuery"
+                    placeholder="{{'Select Query' | translate}}">
+                </mat-form-field>
+              </div>
+              <div fxFlex="7" class="pt-1 pl-1">
+
+              </div>
+              <div fxFlex="31" class="pb-1 pr-1">
+                <mat-form-field class="full-width">
+                  <input
+                    matInput
+                    name="fieldIndex"
+                    formControlName="fieldIndex"
+                    placeholder="{{'Field Indexes' | translate}}">
+                </mat-form-field>
+              </div>
+              <div fxFlex="31" class="pt-1 pr-1">
+                <Label>Required &nbsp;&nbsp;</Label>
+                <mat-radio-group
+                  name="{{i}}"
+                  formControlName="required">
+                  <mat-radio-button [disabled]="!editable" value="true">Yes</mat-radio-button>
+                  <mat-radio-button [disabled]="!editable" value="false">No</mat-radio-button>
+                </mat-radio-group>
+              </div>
+              <div fxFlex="31" class="pb-1 pr-1">
+              </div>
+            </ng-container>
+          </ng-container>
+          <div fxFlex="100" class="pb-1 pr-1">
+            <button
+              type="button"
+              *ngIf="editable"
+              mat-button
+              color="warn"
+              routerLink="/manageReports">{{'CANCEL' | translate}}
+            </button>
+            <span fxFlex></span>
+            <button
+              color="primary"
+              type="button"
+              *ngIf="!editable"
+              mat-raised-button
+              routerLink="/manageReports">Back
+            </button>
+            <button
+              mat-raised-button
+              *ngIf="editable"
+              color="primary"
+              [disabled]="basicForm.invalid || disableBtn">Submit
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </mat-card-content>
+</mat-card>

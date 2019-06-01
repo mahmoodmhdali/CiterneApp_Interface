@@ -1,0 +1,51 @@
+<div class="text-center mat-bg-primary pt-1 pb-1">
+  <h6 class="m-0">{{'NOTIFICATIONS' | translate}}</h6>
+</div>
+<mat-nav-list class="notification-list" role="list" style="max-width: 300px">
+  <mat-list-item *ngIf="!loadedNotifications" style="height: 220px !important" class="notific-item" routerLinkActive="open">
+    <div class="mat-list-text">
+      <div class="pb-1 text-center">
+        <p class="text-muted pt-1">{{'FETCHNOTIFICATIONS' | translate}}</p>
+        <mat-progress-spinner
+          [color]="'primary'"
+          style="margin:0 auto;"
+          [mode]="'indeterminate'">
+        </mat-progress-spinner>
+      </div>
+    </div>
+  </mat-list-item>
+  <mat-list-item *ngIf="notifications.length==0 && loadedNotifications" class="notific-item" routerLinkActive="open">
+    <a [routerLink]="'/dashboard'">
+      <div class="mat-list-text">
+        <h4 class="message">{{'NONEWNOTIFICATIONS' | translate}}</h4>
+      </div>
+    </a>
+  </mat-list-item>
+  <ng-container *ngIf="loadedNotifications">
+    <mat-list-item *ngFor="let notification of notifications" class="notific-item" role="listitem"
+                   routerLinkActive="open">
+      <mat-icon [color]="notification.color" class="notific-icon" (click)="onNotificationClick(notification.href)">
+        {{ notification.hasSEEN ? 'warning' : 'fiber_new' }}
+      </mat-icon>
+      <a [routerLink]="'/dashboard'">
+        <div class="mat-list-text">
+          <h4 class="message">{{ notification.text }}</h4>
+          <small class="time text-muted">{{ notification.dateAddedHuman }}</small>
+        </div>
+      </a>
+      <!-- <mat-icon color="warn" class="notific-icon" (click)="deleteNotification(notification)">clear</mat-icon> -->
+    </mat-list-item>
+  </ng-container>
+</mat-nav-list>
+<div class="text-center mt-1 cursor-pointer mat-color-warn"
+     *ngIf="webNotificationsService.notificationsCount > 0 && loadedNotifications">
+  <small style="cursor:pointer;" (click)="updateWebNotifications()">{{'MARKASREAD' | translate}}</small>
+</div>
+<div class="text-center mt-1 cursor-pointer mat-color-primary"
+     *ngIf="notifications.length>=webNotificationsService.notificationsCount && loadedNotifications">
+  <small *ngIf="newNotificationsFlag" style="cursor:pointer;" (click)="newNotificationsFlag=!newNotificationsFlag;getWebNotifications()">{{'VIEWALLNOTIFICATIONS' | translate}}
+  </small>
+  <small *ngIf="!newNotificationsFlag" style="cursor:pointer;" (click)="newNotificationsFlag=!newNotificationsFlag;getWebNotifications()">{{'VIEWNEWNOTIFICATIONS' | translate}}
+  </small>
+</div>
+<br>

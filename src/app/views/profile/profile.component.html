@@ -1,0 +1,367 @@
+<div fxFlex="100" fxLayout="row wrap" *ngIf="modelLoaded == 1">
+  <div fxFlex="100" fxFlex.gt-md="300px" fxFlex.gt-sm="50">
+    <mat-card class="profile-sidebar mb-1 pb-0">
+      <div class="propic text-center">
+        <img src="assets/images/user.png" alt="">
+      </div>
+      <div class="profile-title text-center mb-1">
+        <div class="main-title">{{user.name}}</div>
+      </div>
+    </mat-card>
+    <!-- Contact Information -->
+    <mat-card class="default">
+      <mat-card-title>{{'CONTACTINFO' | translate}}</mat-card-title>
+      <mat-card-content class="pt-0">
+        <mat-list>
+          <mat-list-item>
+            <mat-icon class="mr-1">email</mat-icon>
+            {{user.email}}
+          </mat-list-item>
+          <mat-list-item>
+            <mat-icon class="mr-1">access_time</mat-icon>
+            {{user.createdDate | date}}
+          </mat-list-item>
+        </mat-list>
+      </mat-card-content>
+    </mat-card>
+  </div>
+  <!-- Profile Views -->
+  <div fxFlex="calc(100% - 300px)" fxFlex.gt-sm="calc(100% - 300px)" fxFlex.gt-md="calc(100% - 300px)">
+    <mat-card class="p-0">
+      <mat-tab-group>
+        <mat-tab label="{{'ACCOUNTSETTINGS' | translate}}">
+          <mat-card-content class="mt-1">
+            <form #form="ngForm" [formGroup]="itemForm" (ngSubmit)="submit()">
+              <div fxLayout="row wrap" fxLayout.lt-sm="column">
+                <div fxFlex="100" class="pr-1">
+                  <mat-form-field class="full-width">
+                    <input
+                      matInput
+                      [formControl]="itemForm.controls['email']"
+                      placeholder="{{'EMAIL' | translate}}">
+                  </mat-form-field>
+                </div>
+                <div fxFlex="100" class="pr-1">
+                  <mat-form-field class="full-width">
+                    <input
+                      matInput
+                      [formControl]="itemForm.controls['name']"
+                      placeholder="{{'First Name' | translate}}">
+                  </mat-form-field>
+                  <small
+                    *ngIf="itemForm.controls['name'].hasError('required') && itemForm.controls['name'].touched"
+                    class="form-error-msg"> {{'NAMEREQUIRED' | translate}}
+                  </small>
+                  <small
+                    *ngIf="itemForm.controls['name'].hasError('serverValidation') && itemForm.controls['name'].touched"
+                    class="form-error-msg"> {{itemForm.controls['name'].errors.serverValidation}}
+                  </small>
+                </div>
+                <div fxFlex="100" class="mt-1">
+                  <button mat-raised-button color="primary"
+                          [disabled]="itemForm.invalid || disableButton || !itemForm.dirty">
+                    {{'SAVE' | translate}}
+                  </button>
+                  <span fxFlex></span>
+                  <button mat-button color="warn" type="button" (click)="cancelClick()">
+                    {{'CANCEL' | translate}}
+                  </button>
+                </div>
+
+              </div>
+            </form>
+          </mat-card-content>
+        </mat-tab>
+        <mat-tab label="{{'CHANGEPASSWORD' | translate}}">
+          <mat-card-content class="mt-1">
+            <form #form="ngForm" [formGroup]="passwordForm" (ngSubmit)="submitPassword()">
+              <div fxLayout="row wrap" fxLayout.lt-sm="column">
+                <div fxFlex="100" class="pr-1">
+                  <mat-form-field class="full-width">
+                    <input
+                      [type]="hidePassword ? 'password' : 'text'"
+                      matInput
+                      [formControl]="passwordForm.controls['password']"
+                      placeholder="{{'CURRENTPASSWORD' | translate}}">
+                    <mat-icon matSuffix (click)="hidePassword = !hidePassword" style="cursor: pointer">{{hidePassword ?
+                      'visibility' : 'visibility_off'}}
+                    </mat-icon>
+                  </mat-form-field>
+                  <small
+                    *ngIf="passwordForm.controls['password'].hasError('required') && passwordForm.controls['password'].touched"
+                    class="form-error-msg"> {{'CURRENTPASSWORDREQUIRED' | translate}}
+                  </small>
+                  <small
+                    *ngIf="passwordForm.controls['password'].hasError('serverValidation') && passwordForm.controls['password'].touched"
+                    class="form-error-msg"> {{passwordForm.controls['password'].errors.serverValidation}}
+                  </small>
+                </div>
+                <div fxFlex="100" class="pr-1">
+                  <mat-form-field class="full-width">
+                    <input
+                      [type]="hideNewPassword ? 'password' : 'text'"
+                      matInput
+                      [formControl]="passwordForm.controls['newPassword']"
+                      placeholder="{{'NEWPASSWORD' | translate}}">
+                    <mat-icon matSuffix (click)="hideNewPassword = !hideNewPassword" style="cursor: pointer">
+                      {{hideNewPassword ? 'visibility' :
+                      'visibility_off'}}
+                    </mat-icon>
+                  </mat-form-field>
+                  <small
+                    *ngIf="passwordForm.controls['newPassword'].hasError('required') && passwordForm.controls['newPassword'].touched"
+                    class="form-error-msg"> {{'NEWPASSWORDREQUIRED' | translate}}
+                  </small>
+                  <small
+                    *ngIf="passwordForm.controls['newPassword'].hasError('serverValidation') && passwordForm.controls['newPassword'].touched"
+                    class="form-error-msg"> {{passwordForm.controls['newPassword'].errors.serverValidation}}
+                  </small>
+                </div>
+                <div fxFlex="100" class="pr-1">
+                  <mat-form-field class="full-width">
+                    <input
+                      [type]="hideConfirmPassword ? 'password' : 'text'"
+                      matInput
+                      [formControl]="passwordForm.controls['confirmPassword']"
+                      placeholder="{{'CONFIRMPASSWORD' | translate}}">
+                    <mat-icon matSuffix (click)="hideConfirmPassword = !hideConfirmPassword" style="cursor: pointer">
+                      {{hideConfirmPassword ? 'visibility' :
+                      'visibility_off'}}
+                    </mat-icon>
+                  </mat-form-field>
+                  <small
+                    *ngIf="passwordForm.controls['confirmPassword'].hasError('required') && passwordForm.controls['confirmPassword'].touched"
+                    class="form-error-msg"> {{'CONFIRMPASSWORDREQUIRED' | translate}}
+                  </small>
+                  <small
+                    *ngIf="passwordForm.controls['confirmPassword'].hasError('serverValidation') && passwordForm.controls['confirmPassword'].touched"
+                    class="form-error-msg"> {{passwordForm.controls['confirmPassword'].errors.serverValidation}}
+                  </small>
+                  <small
+                    *ngIf="passwordForm.controls['confirmPassword'].hasError('equalTo') && passwordForm.controls['confirmPassword'].touched && !passwordForm.controls['confirmPassword'].hasError('required')"
+                    class="form-error-msg"> {{'CONFIRMPASSWORDSAMEASPASSWORD' | translate}}
+                  </small>
+                </div>
+                <div fxFlex="100" class="mt-1">
+                  <button mat-raised-button color="primary"
+                          [disabled]="passwordForm.invalid || disableButton || !passwordForm.dirty">
+                    {{'SAVE' | translate}}
+                  </button>
+                  <span fxFlex></span>
+                  <button mat-button color="warn" type="button" (click)="cancelClickPassword()">
+                    {{'CANCEL' | translate}}
+                  </button>
+                </div>
+              </div>
+            </form>
+          </mat-card-content>
+        </mat-tab>
+        <!--<mat-tab label="{{'Account Images' | translate}}" *ngxPermissionsOnly="['COMPANY', 'OUTLET']">-->
+          <mat-tab label="{{'Account Images' | translate}}" *ngxPermissionsOnly="['COMPANYYYYYYY']">
+          <mat-card-content class="mt-1">
+            <form #form="ngForm" [formGroup]="imagesForm" (ngSubmit)="updateImages()">
+              <div fxLayout="row wrap" fxLayout.lt-sm="column">
+                <div fxFlex="100" class="pr-1">
+                  <mat-form-field class="full-width">
+                    <input
+                      matInput
+                      [formControl]="imagesForm.controls['imageName1']"
+                      [readonly]="true"
+                      placeholder="Image Index 1" READONLY/>
+                    <mat-icon matSuffix *ngIf="imagesForm.controls['imageName1'].value !== ''" (click)="removeImage(1)"
+                              style="cursor: pointer; color: red;">clear
+                    </mat-icon>
+                    <mat-icon matSuffix (click)="fileInput1.click()" style="cursor: pointer; color: #247ba0;">
+                      file_upload
+                    </mat-icon>
+                  </mat-form-field>
+                </div>
+                <input type="file" style="display: none" class="form-control" name="batchInput"
+                       (change)="image1FileChange($event)" accept=".jpg, .jpeg, .png" #fileInput1>
+                <div fxFlex="100" class="pr-1">
+                  <mat-form-field class="full-width">
+                    <input
+                      matInput
+                      [formControl]="imagesForm.controls['imageName2']"
+                      [readonly]="true"
+                      placeholder="Image Index 2" READONLY/>
+                    <mat-icon matSuffix *ngIf="imagesForm.controls['imageName2'].value !== ''" (click)="removeImage(2)"
+                              style="cursor: pointer; color: red;">clear
+                    </mat-icon>
+                    <mat-icon matSuffix (click)="fileInput2.click()" style="cursor: pointer; color: #247ba0;">
+                      file_upload
+                    </mat-icon>
+                  </mat-form-field>
+                </div>
+                <input type="file" style="display: none" class="form-control" name="batchInput"
+                       (change)="image2FileChange($event)" accept=".jpg, .jpeg, .png" #fileInput2>
+                <div fxFlex="100" class="pr-1">
+                  <mat-form-field class="full-width">
+                    <input
+                      matInput
+                      [formControl]="imagesForm.controls['imageName3']"
+                      [readonly]="true"
+                      placeholder="Image Index 3" READONLY/>
+                    <mat-icon matSuffix *ngIf="imagesForm.controls['imageName3'].value !== ''" (click)="removeImage(3)"
+                              style="cursor: pointer; color: red;">clear
+                    </mat-icon>
+                    <mat-icon matSuffix (click)="fileInput3.click()" style="cursor: pointer; color: #247ba0;">
+                      file_upload
+                    </mat-icon>
+                  </mat-form-field>
+                </div>
+                <input type="file" style="display: none" class="form-control" name="batchInput"
+                       (change)="image3FileChange($event)" accept=".jpg, .jpeg, .png" #fileInput3>
+                <div fxFlex="100" class="pr-1">
+                  <mat-form-field class="full-width">
+                    <input
+                      matInput
+                      [formControl]="imagesForm.controls['imageName4']"
+                      [readonly]="true"
+                      placeholder="Image Index 4" READONLY/>
+                    <mat-icon matSuffix *ngIf="imagesForm.controls['imageName4'].value !== ''" (click)="removeImage(4)"
+                              style="cursor: pointer; color: red;">clear
+                    </mat-icon>
+                    <mat-icon matSuffix (click)="fileInput4.click()" style="cursor: pointer; color: #247ba0;">
+                      file_upload
+                    </mat-icon>
+                  </mat-form-field>
+                </div>
+                <input type="file" style="display: none" class="form-control" name="batchInput"
+                       (change)="image4FileChange($event)" accept=".jpg, .jpeg, .png" #fileInput4>
+                <div fxFlex="100" class="mt-1">
+                  <button mat-raised-button color="primary"
+                          [disabled]="imagesForm.invalid || disableButton || !imagesForm.dirty">
+                    {{'SAVE' | translate}}
+                  </button>
+                  <span fxFlex></span>
+                  <button mat-button color="warn" type="button" (click)="cancelClickImages()">
+                    {{'CANCEL' | translate}}
+                  </button>
+                </div>
+              </div>
+            </form>
+          </mat-card-content>
+        </mat-tab>
+        <!--<mat-tab label="{{'Account Locations' | translate}}" *ngxPermissionsOnly="['COMPANY', 'OUTLET']">-->
+          <mat-tab label="{{'Account Locations' | translate}}" *ngxPermissionsOnly="['OUTLET']">
+          <mat-card-content class="mt-1">
+            <form #form="ngForm" [formGroup]="locationsForm" (ngSubmit)="updateLocations()">
+              <div fxLayout="row wrap" fxLayout.lt-sm="column">
+                <div fxFlex="50" class="pr-1">
+                  <mat-form-field class="full-width">
+                    <input
+                      matInput
+                      [formControl]="locationsForm.controls['longitude1']"
+                      placeholder="Longitude 1"/>
+                    <!--<mat-icon matSuffix (click)="fileInput1.click()" style="cursor: pointer; color: #247ba0;">-->
+                    <!--file_upload-->
+                    <!--</mat-icon>-->
+                  </mat-form-field>
+                </div>
+                <div fxFlex="50" class="pr-1">
+                  <mat-form-field class="full-width">
+                    <input
+                      matInput
+                      [formControl]="locationsForm.controls['latitude1']"
+                      placeholder="Latitude 1"/>
+                    <!--<mat-icon matSuffix (click)="fileInput1.click()" style="cursor: pointer; color: #247ba0;">-->
+                    <!--file_upload-->
+                    <!--</mat-icon>-->
+                  </mat-form-field>
+                </div>
+                <div fxFlex="50" class="pr-1">
+                  <mat-form-field class="full-width">
+                    <input
+                      matInput
+                      [formControl]="locationsForm.controls['longitude2']"
+                      placeholder="Longitude 2"/>
+                    <!--<mat-icon matSuffix (click)="fileInput1.click()" style="cursor: pointer; color: #247ba0;">-->
+                    <!--file_upload-->
+                    <!--</mat-icon>-->
+                  </mat-form-field>
+                </div>
+                <div fxFlex="50" class="pr-1">
+                  <mat-form-field class="full-width">
+                    <input
+                      matInput
+                      [formControl]="locationsForm.controls['latitude2']"
+                      placeholder="Latitude 2"/>
+                    <!--<mat-icon matSuffix (click)="fileInput1.click()" style="cursor: pointer; color: #247ba0;">-->
+                    <!--file_upload-->
+                    <!--</mat-icon>-->
+                  </mat-form-field>
+                </div>
+                <div fxFlex="50" class="pr-1">
+                  <mat-form-field class="full-width">
+                    <input
+                      matInput
+                      [formControl]="locationsForm.controls['longitude3']"
+                      placeholder="Longitude 3"/>
+                    <!--<mat-icon matSuffix (click)="fileInput1.click()" style="cursor: pointer; color: #247ba0;">-->
+                    <!--file_upload-->
+                    <!--</mat-icon>-->
+                  </mat-form-field>
+                </div>
+                <div fxFlex="50" class="pr-1">
+                  <mat-form-field class="full-width">
+                    <input
+                      matInput
+                      [formControl]="locationsForm.controls['latitude3']"
+                      placeholder="Latitude 3"/>
+                    <!--<mat-icon matSuffix (click)="fileInput1.click()" style="cursor: pointer; color: #247ba0;">-->
+                    <!--file_upload-->
+                    <!--</mat-icon>-->
+                  </mat-form-field>
+                </div>
+                <div fxFlex="50" class="pr-1">
+                  <mat-form-field class="full-width">
+                    <input
+                      matInput
+                      [formControl]="locationsForm.controls['longitude4']"
+                      placeholder="Longitude 4"/>
+                    <!--<mat-icon matSuffix (click)="fileInput1.click()" style="cursor: pointer; color: #247ba0;">-->
+                    <!--file_upload-->
+                    <!--</mat-icon>-->
+                  </mat-form-field>
+                </div>
+                <div fxFlex="50" class="pr-1">
+                  <mat-form-field class="full-width">
+                    <input
+                      matInput
+                      [formControl]="locationsForm.controls['latitude4']"
+                      placeholder="Latitude 4"/>
+                    <!--<mat-icon matSuffix (click)="fileInput1.click()" style="cursor: pointer; color: #247ba0;">-->
+                    <!--file_upload-->
+                    <!--</mat-icon>-->
+                  </mat-form-field>
+                </div>
+                <div fxFlex="100" class="mt-1">
+                  <button mat-raised-button color="primary"
+                          [disabled]="locationsForm.invalid || disableButton || !locationsForm.dirty">
+                    {{'SAVE' | translate}}
+                  </button>
+                  <span fxFlex></span>
+                  <button mat-button color="warn" type="button" (click)="cancelClickLocations()">
+                    {{'CANCEL' | translate}}
+                  </button>
+                </div>
+              </div>
+            </form>
+          </mat-card-content>
+        </mat-tab>
+      </mat-tab-group>
+    </mat-card>
+  </div>
+</div>
+
+<div fxFlex="100" *ngIf="modelLoaded != 1">
+  <div class="pb-1 text-center">
+    <p class="text-muted pt-1">{{'FETCHUSER' | translate}}</p>
+    <mat-progress-spinner
+      [color]="'primary'"
+      style="margin:0 auto;"
+      [mode]="'indeterminate'">
+    </mat-progress-spinner>
+  </div>
+</div>

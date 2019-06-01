@@ -1,0 +1,88 @@
+<h1 matDialogTitle>{{data.title}}</h1>
+<form [formGroup]="itemForm" (ngSubmit)="submit()">
+  <input
+    name="id"
+    [formControl]="itemForm.controls['id']"
+    type="hidden"
+    placeholder="id">
+  <div fxLayout="row wrap" fxLayout.lt-sm="column">
+    <div fxFlex="50" class="pr-1">
+      <mat-form-field class="full-width">
+        <input
+          matInput
+          [formControl]="itemForm.controls['imageName1']"
+          [readonly]="true"
+          placeholder="Main Image" READONLY/>
+        <mat-icon matSuffix *ngIf="itemForm.controls['imageName1'].value !== ''" (click)="removeImage(1)"
+                  style="cursor: pointer; color: red;">clear
+        </mat-icon>
+        <mat-icon matSuffix (click)="fileInput1.click()" style="cursor: pointer; color: #247ba0;">file_upload</mat-icon>
+      </mat-form-field>
+      <small
+        *ngIf="itemForm.controls['imageName1'].hasError('required') && itemForm.controls['imageName1'].touched"
+        class="form-error-msg"> Main Image is required
+      </small>
+    </div>
+    <input type="file" style="display: none" class="form-control" name="batchInput"
+           (change)="image1FileChange($event)" accept=".jpg, .jpeg, .png" #fileInput1>
+    <div fxFlex="50" class="pr-1">
+      <mat-form-field class="full-width">
+        <input
+          matInput
+          [formControl]="itemForm.controls['imageName2']"
+          [readonly]="true"
+          placeholder="Image Slider 1" READONLY/>
+        <mat-icon matSuffix *ngIf="itemForm.controls['imageName2'].value !== ''" (click)="removeImage(2)"
+                  style="cursor: pointer; color: red;">clear
+        </mat-icon>
+        <mat-icon matSuffix (click)="fileInput2.click()" style="cursor: pointer; color: #247ba0;">file_upload</mat-icon>
+      </mat-form-field>
+    </div>
+    <input type="file" style="display: none" class="form-control" name="batchInput"
+           (change)="image2FileChange($event)" accept=".jpg, .jpeg, .png" #fileInput2>
+    <div fxFlex="50" class="pr-1">
+      <mat-form-field class="full-width">
+        <input
+          matInput
+          [formControl]="itemForm.controls['imageName3']"
+          [readonly]="true"
+          placeholder="Image Slider 2" READONLY/>
+        <mat-icon matSuffix *ngIf="itemForm.controls['imageName3'].value !== ''" (click)="removeImage(3)"
+                  style="cursor: pointer; color: red;">clear
+        </mat-icon>
+        <mat-icon matSuffix (click)="fileInput3.click()" style="cursor: pointer; color: #247ba0;">file_upload</mat-icon>
+      </mat-form-field>
+    </div>
+    <input type="file" style="display: none" class="form-control" name="batchInput"
+           (change)="image3FileChange($event)" accept=".jpg, .jpeg, .png" #fileInput3>
+    <div fxFlex="50" class="pr-1">
+      <mat-form-field class="full-width">
+        <input
+          matInput
+          [formControl]="itemForm.controls['imageName4']"
+          [readonly]="true"
+          placeholder="Image Slider 3" READONLY/>
+        <mat-icon matSuffix *ngIf="itemForm.controls['imageName4'].value !== ''" (click)="removeImage(4)"
+                  style="cursor: pointer; color: red;">clear
+        </mat-icon>
+        <mat-icon matSuffix (click)="fileInput4.click()" style="cursor: pointer; color: #247ba0;">file_upload</mat-icon>
+      </mat-form-field>
+    </div>
+    <input type="file" style="display: none" class="form-control" name="batchInput"
+           (change)="image4FileChange($event)" accept=".jpg, .jpeg, .png" #fileInput4>
+    <div *ngIf="!isUploading" fxFlex="100" class="mt-1">
+      <button mat-raised-button color="primary" [disabled]="itemForm.invalid || disableButton">Save</button>
+      <span fxFlex></span>
+      <button mat-button color="warn" type="button" (click)="closeDialog()">Cancel</button>
+    </div>
+    <div *ngIf="isUploading" fxFlex="100" class="pr-1 text-center">
+      <p class="text-muted pt-1">Uploading images</p>
+      <mat-progress-spinner
+        [color]="'primary'"
+        style="margin:0 auto;"
+        [mode]="'indeterminate'"
+        [diameter]="40">
+      </mat-progress-spinner>
+    </div>
+  </div>
+</form>

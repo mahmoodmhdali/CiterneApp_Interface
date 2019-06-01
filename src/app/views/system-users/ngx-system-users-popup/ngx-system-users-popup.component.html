@@ -1,0 +1,70 @@
+<div *ngIf="disableBoxes" fxFlex="50" class="pr-1">
+  <a mat-list-avatar
+     class="app-user-photo"
+     [ngClass]="{online: true}">
+    <img src="assets/images/user.png" alt="">
+  </a>
+</div>
+<h1 matDialogTitle *ngIf="!disableBoxes">{{data.title}}</h1>
+<form [formGroup]="itemForm" (ngSubmit)="submit()">
+  <input
+    name="id"
+    [formControl]="itemForm.controls['id']"
+    type="hidden"
+    placeholder="id">
+  <div fxLayout="row wrap" fxLayout.lt-sm="column">
+    <div fxFlex="50" class="pr-1">
+      <mat-form-field class="full-width">
+        <input
+          matInput
+          name="name"
+          [formControl]="itemForm.controls['name']"
+          placeholder="{{'Name' | translate}}">
+      </mat-form-field>
+      <small
+        *ngIf="itemForm.controls['name'].hasError('required') && itemForm.controls['name'].touched"
+        class="form-error-msg"> {{'Name is required' | translate}}
+      </small>
+      <small
+        *ngIf="itemForm.controls['name'].hasError('serverValidation') && itemForm.controls['name'].touched"
+        class="form-error-msg"> {{itemForm.controls['name'].errors.serverValidation}}
+      </small>
+    </div>
+    <div fxFlex="50" class="pr-1">
+      <mat-form-field class="full-width">
+        <input
+          matInput
+          type="email"
+          name="email"
+          [formControl]="itemForm.controls['email']"
+          placeholder="{{'EMAIL' | translate}}">
+      </mat-form-field>
+      <small
+        *ngIf="itemForm.controls['email'].hasError('required') && itemForm.controls['email'].touched"
+        class="form-error-msg"> {{'EMAILREQUIRED' | translate}}
+      </small>
+      <small
+        *ngIf="itemForm.controls['email'].hasError('email') && itemForm.controls['email'].touched && !itemForm.controls['email'].hasError('required')"
+        class="form-error-msg"> {{'EMAILNOTWELLFORMATED' | translate}}
+      </small>
+      <small
+        *ngIf="itemForm.controls['email'].hasError('serverValidation') && itemForm.controls['email'].touched"
+        class="form-error-msg"> {{itemForm.controls['email'].errors.serverValidation}}
+      </small>
+    </div>
+    <div fxFlex="100" class="mt-1">
+      <button mat-raised-button *ngIf="!disableBoxes" color="primary" [disabled]="itemForm.invalid || disableButton">
+        {{'SAVE' | translate}}
+      </button>
+      <span fxFlex></span>
+      <button mat-button color="warn" type="button" (click)="closeDialog()">
+        <span *ngIf="!disableBoxes">
+          {{'CANCEL' | translate}}
+        </span>
+        <span *ngIf="disableBoxes">
+          {{'CLOSE' | translate}}
+        </span>
+      </button>
+    </div>
+  </div>
+</form>

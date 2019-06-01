@@ -1,0 +1,76 @@
+<div class="sidebar-panel">
+  <div id="scroll-area" [perfectScrollbar] class="navigation-hold" style="padding-top: 0 !important;" fxLayout="column">
+    <!-- App Logo -->
+    <!--<div class="branding default-bg">-->
+      <!--<img src="assets/images/logo.png" alt="" class="app-logo">-->
+      <!--&lt;!&ndash; Two different logos for dark and light themes &ndash;&gt;-->
+      <!--<img-->
+        <!--src="assets/images/logo-text.png"-->
+      <!--alt=""-->
+      <!--class="app-logo-text"-->
+      <!--*ngIf="themeService.activatedTheme?.name?.indexOf('dark') !== -1">-->
+      <!--<img-->
+      <!--src="assets/images/logo-text.png"-->
+      <!--alt=""-->
+      <!--class="app-logo-text"-->
+      <!--*ngIf="themeService.activatedTheme?.name?.indexOf('dark') === -1">-->
+    <!--</div>-->
+
+    <!-- Sidebar user -->
+    <div class="app-user">
+      <div class="app-user-photo" style="border-radius: 0 !important; width: 150px !important">
+        <img src="assets/images/user.png" alt="" style="border-radius: 0 !important;">
+      </div>
+      <span class="app-user-name mb-05">
+        <mat-icon class="icon-xs text-muted">lock</mat-icon>
+        {{logedInUser.name}}
+      </span>
+      <!-- Small buttons -->
+      <!--<div class="app-user-controls">-->
+        <!--<button-->
+        <!--class="text-muted"-->
+        <!--mat-icon-button-->
+        <!--mat-xs-button-->
+        <!--[matMenuTriggerFor]="appUserMenu">-->
+          <!--<mat-icon>settings</mat-icon>-->
+        <!--</button>-->
+        <!--<button-->
+        <!--class="text-muted"-->
+        <!--mat-icon-button-->
+        <!--mat-xs-button-->
+        <!--matTooltip="Inbox"-->
+        <!--routerLink="/inbox">-->
+          <!--<mat-icon>email</mat-icon>-->
+        <!--</button>-->
+        <!--<button-->
+        <!--class="text-muted"-->
+        <!--mat-icon-button-->
+        <!--mat-xs-button-->
+        <!--matTooltip="{{'SIGNOUT' | translate}}"-->
+        <!--routerLink="/sessions/signin">-->
+          <!--<mat-icon>exit_to_app</mat-icon>-->
+        <!--</button>-->
+        <!--<mat-menu #appUserMenu="matMenu">-->
+            <!--<button mat-menu-item routerLink="/profile/overview">-->
+              <!--<mat-icon>account_box</mat-icon>-->
+              <!--<span>{{'PROFILE' | translate}}</span>-->
+            <!--</button>-->
+            <!--<button mat-menu-item routerLink="/profile/settings">-->
+              <!--<mat-icon>settings</mat-icon>-->
+              <!--<span>Account Settings</span>-->
+            <!--</button>-->
+            <!--<button mat-menu-item routerLink="/calendar">-->
+              <!--<mat-icon>date_range</mat-icon>-->
+              <!--<span>Calendar</span>-->
+            <!--</button>-->
+            <!--<button mat-menu-item routerLink="/sessions/signin">-->
+              <!--<mat-icon>exit_to_app</mat-icon>-->
+              <!--<span>{{'SIGNOUT' | translate}}</span>-->
+            <!--</button>-->
+          <!--</mat-menu>-->
+      <!--</div>-->
+    </div>
+    <!-- Navigation -->
+    <app-sidenav [items]="menuItems" [hasIconMenu]="hasIconTypeMenuItem" [iconMenuTitle]="iconTypeMenuTitle"></app-sidenav>
+  </div>
+</div>

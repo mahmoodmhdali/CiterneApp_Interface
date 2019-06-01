@@ -1,0 +1,48 @@
+<button mat-raised-button class="pl-1 ml-05 mb-05" color="primary" [routerLink]="'/manageReports/manage'">{{'Add Report' | translate}}
+  </button>
+<mat-card class="p-0">
+  <mat-card-content *ngIf="modelLoaded == 1 && rows.length > 0" class="p-0">
+    <ngx-datatable
+      class="material ml-0 mr-0"
+      [rows]="rows"
+      [columnMode]="'flex'"
+      [headerHeight]="50"
+      [footerHeight]="50"
+      [limit]="10"
+      [rowHeight]="'auto'">
+      <ngx-datatable-column name="{{'Report Name' | translate}}" [flexGrow]="1">
+        <ng-template let-row="row" ngx-datatable-cell-template>
+          <a style="color: royalblue;" routerLink="/manageReports/view/{{row?.id}}">{{ row?.name }}</a>
+        </ng-template>
+      </ngx-datatable-column>
+      <ngx-datatable-column name="{{'ACTIONS' | translate}}" [flexGrow]="1">
+        <ng-template let-row="row" ngx-datatable-cell-template>
+          <button mat-icon-button mat-sm-button color="primary" class="mr-1"
+                  routerLink="/manageReports/manage/{{row?.id}}">
+            <mat-icon>edit</mat-icon>
+          </button>
+          <button mat-icon-button mat-sm-button color="warn" (click)="removeReport(row)">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </ng-template>
+      </ngx-datatable-column>
+    </ngx-datatable>
+  </mat-card-content>
+
+  <mat-card-content *ngIf="modelLoaded != 1">
+    <div class="pb-1 text-center">
+      <p class="text-muted pt-1">{{'Load Data' | translate}}</p>
+      <mat-progress-spinner
+        [color]="'primary'"
+        style="margin:0 auto;"
+        [mode]="'indeterminate'">
+      </mat-progress-spinner>
+    </div>
+  </mat-card-content>
+
+  <mat-card-content *ngIf="modelLoaded == 1 && rows.length <= 0">
+    <div class="pb-1 text-center">
+      <h4 class="text-muted">{{'No Reports Found' | translate}}</h4>
+    </div>
+  </mat-card-content>
+</mat-card>

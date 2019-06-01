@@ -1,0 +1,195 @@
+<h1 matDialogTitle>{{data.title}}</h1>
+<form [formGroup]="itemForm" (ngSubmit)="submit()">
+  <input
+    name="id"
+    [formControl]="itemForm.controls['id']"
+    type="hidden"
+    placeholder="id">
+  <div fxLayout="row wrap" fxLayout.lt-sm="column">
+    <div id="hewwwww" fxFlex="100" style="max-height: 600px !important; overflow-x: auto">
+      <div fxLayout="row wrap" fxLayout.lt-sm="column">
+        <div fxFlex="50" class="pr-1">
+          <mat-form-field class="full-width">
+            <input
+              matInput
+              [formControl]="itemForm.controls['title']"
+              placeholder="Title">
+          </mat-form-field>
+          <small
+            *ngIf="itemForm.controls['title'].hasError('required') && itemForm.controls['title'].touched"
+            class="form-error-msg"> Title is required
+          </small>
+          <small
+            *ngIf="itemForm.controls['title'].hasError('serverValidation') && itemForm.controls['title'].touched"
+            class="form-error-msg"> {{itemForm.controls['title'].errors.serverValidation}}
+          </small>
+        </div>
+        <div fxFlex="50" class="pr-1">
+          <mat-form-field class="full-width">
+            <mat-select placeholder="Profiles" [formControl]="itemForm.controls['profileCollection']" multiple>
+              <mat-select-trigger>
+            <span *ngIf="profileCollection.value?.length > 1; else oneGroup" class="example-additional-selection">
+              {{profileCollection.value.length}} Profiles Selected
+            </span>
+                <ng-template #oneGroup>
+              <span class="example-additional-selection">
+                {{profileCollection.value.length}} Profile selected
+              </span>
+                </ng-template>
+              </mat-select-trigger>
+              <mat-option *ngFor="let style of profiles" [value]="style.id">{{style.name}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+          <small
+            *ngIf="itemForm.controls['profileCollection'].hasError('required') && itemForm.controls['profileCollection'].touched"
+            class="form-error-msg"> At least one profile should be selected
+          </small>
+        </div>
+        <div fxFlex="50" class="pr-1">
+          <mat-form-field class="full-width">
+            <mat-select placeholder="Category" [formControl]="itemForm.controls['eventClassCategory']">
+              <mat-option *ngFor="let style of categories" [value]="style.id">{{style.name}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+          <small
+            *ngIf="itemForm.controls['eventClassCategory'].hasError('required') && itemForm.controls['eventClassCategory'].touched"
+            class="form-error-msg"> Category is required
+          </small>
+        </div>
+        <div fxFlex="50" class="pr-1">
+          <mat-form-field class="full-width">
+            <input
+              matInput
+              [formControl]="itemForm.controls['ticketingURL']"
+              placeholder="Booking URL">
+          </mat-form-field>
+          <small
+            *ngIf="itemForm.controls['ticketingURL'].hasError('serverValidation') && itemForm.controls['ticketingURL'].touched"
+            class="form-error-msg"> {{itemForm.controls['ticketingURL'].errors.serverValidation}}
+          </small>
+        </div>
+        <div fxFlex="50" class="pr-1">
+          <mat-form-field class="full-width">
+            <input
+              matInput
+              [formControl]="itemForm.controls['numberOfParticipants']"
+              placeholder="Maximum Number Of Participants">
+          </mat-form-field>
+          <small
+            *ngIf="itemForm.controls['numberOfParticipants'].hasError('required') && itemForm.controls['numberOfParticipants'].touched"
+            class="form-error-msg"> Maximum Number Of Participants is required
+          </small>
+          <small
+            *ngIf="itemForm.controls['numberOfParticipants'].hasError('pattern') && itemForm.controls['numberOfParticipants'].touched"
+            class="form-error-msg"> Maximum Number Of Participants must be a valid number between 0 and 999999
+          </small>
+          <small
+            *ngIf="itemForm.controls['numberOfParticipants'].hasError('serverValidation') && itemForm.controls['numberOfParticipants'].touched"
+            class="form-error-msg"> {{itemForm.controls['numberOfParticipants'].errors.serverValidation}}
+          </small>
+        </div>
+        <div fxFlex="50" class="pr-1">
+          <mat-form-field class="full-width">
+            <input
+              matInput
+              [formControl]="itemForm.controls['eventIndex']"
+              placeholder="Class Index">
+          </mat-form-field>
+          <small
+            *ngIf="itemForm.controls['eventIndex'].hasError('required') && itemForm.controls['eventIndex'].touched"
+            class="form-error-msg"> Class Index is required
+          </small>
+          <small
+            *ngIf="itemForm.controls['eventIndex'].hasError('pattern') && itemForm.controls['eventIndex'].touched"
+            class="form-error-msg"> Class Index must be a valid number between 0 and 999999
+          </small>
+          <small
+            *ngIf="itemForm.controls['eventIndex'].hasError('serverValidation') && itemForm.controls['eventIndex'].touched"
+            class="form-error-msg"> {{itemForm.controls['eventIndex'].errors.serverValidation}}
+          </small>
+        </div>
+        <div fxFlex="100" class="pr-1">
+          <mat-form-field class="full-width">
+        <textarea rows="3"
+                  matInput
+                  style="resize: none;"
+                  [formControl]="itemForm.controls['about']"
+                  placeholder="About"></textarea>
+          </mat-form-field>
+          <small
+            *ngIf="itemForm.controls['about'].hasError('required') && itemForm.controls['about'].touched"
+            class="form-error-msg"> About is required
+          </small>
+          <small
+            *ngIf="itemForm.controls['about'].hasError('serverValidation') && itemForm.controls['about'].touched"
+            class="form-error-msg"> {{itemForm.controls['about'].errors.serverValidation}}
+          </small>
+        </div>
+        <h1 matDialogTitle>Schedules
+          <button type="button" mat-icon-button mat-sm-button matTooltip="Add Schedule" color="primary" class="ml-1"
+                  (click)="addEventClassSchedules('', '', true)">
+            <mat-icon>add_circle_outline</mat-icon>
+          </button>
+          <small
+            *ngIf="!eventClassSchedulesExists"
+            class="form-error-msg"> At least one schedule should be added
+          </small>
+        </h1>
+        <div fxFlex="100" formArrayName="eventClassSchedules">
+          <div fxLayout="row wrap" fxLayout.lt-sm="column"
+               *ngFor="let item of eventClassSchedules.controls; let pointIndex=index"
+               [formGroupName]="pointIndex">
+            <div fxFlex="45" class="pr-1">
+              <mat-form-field class="full-width">
+                <mat-select placeholder="Day" formControlName="classDayIndex">
+                  <mat-option *ngFor="let day of days" [value]="day.value">{{day.name}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+              <small
+                *ngIf="itemForm.controls['eventClassSchedules'].get(pointIndex.toString()).controls['classDayIndex'].hasError('required') &&
+                itemForm.controls['eventClassSchedules'].get(pointIndex.toString()).controls['classDayIndex'].touched"
+                class="form-error-msg"> Day is required
+              </small>
+            </div>
+            <div fxFlex="45" class="pr-1">
+              <mat-form-field class="full-width">
+                <input
+                  matInput
+                  [owlDateTime]="dateFrom"
+                  [owlDateTimeTrigger]="dateFrom"
+                  formControlName="time"
+                  autocomplete="off"
+                  placeholder="Time"
+                  #fromDate>
+                <mat-icon *ngIf="fromDate.value != ''" matSuffix
+                          (click)="clearDate(pointIndex)" style="cursor: pointer">
+                  clear
+                </mat-icon>
+              </mat-form-field>
+              <small
+                *ngIf="itemForm.controls['eventClassSchedules'].get(pointIndex.toString()).controls['time'].hasError('required') &&
+                itemForm.controls['eventClassSchedules'].get(pointIndex.toString()).controls['time'].touched"
+                class="form-error-msg"> Time is required
+              </small>
+              <owl-date-time [pickerType]="'timer'" #dateFrom></owl-date-time>
+            </div>
+            <div fxFlex="10" class="pr-1">
+              <button type="button" (click)="deleteEventClassSchedules(pointIndex)" matTooltip="Delete Schedule"
+                      mat-mini-fab style="background-color: transparent" class="mr-1">
+                <mat-icon style="color: red">remove_circle_outline</mat-icon>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div fxFlex="100" class="mt-1">
+      <button mat-raised-button color="primary" [disabled]="itemForm.invalid || disableButton">Save</button>
+      <span fxFlex></span>
+      <button mat-button color="warn" type="button" (click)="closeDialog()">Cancel</button>
+    </div>
+  </div>
+</form>
