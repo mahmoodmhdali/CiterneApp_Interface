@@ -40,6 +40,10 @@ export class AuthService {
     this.router.navigate(['/sessions/signin']);
   }
 
+  signOutWithoutRedirect () {
+    this.tokensService.clearTokens();
+  }
+
   isAuthenticated () {
     return this.tokensService.isTokentExpired();
   }

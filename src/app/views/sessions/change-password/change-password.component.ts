@@ -25,6 +25,8 @@ export class ChangePasswordComponent implements OnInit {
   token = '';
   hidePassword = true;
   hideConfirmPassword = true;
+  successResetPass = false;
+  messageToDisplay = '';
 
   constructor (private router: Router,
                private authService: AuthService,
@@ -57,12 +59,12 @@ export class ChangePasswordComponent implements OnInit {
           (response: ResponseBuilderModel) => {
             if (response.code === + this.responseCodeConfig.SUCCESS) {
               if (! response.data.user) {
-                this.router.navigate(['/sessions/signin']);
-                this.snack.open('Link has been expired', 'OK', {duration: 4000});
+                this.successResetPass = true;
+                this.messageToDisplay = 'Link has been expired';
               }
             } else {
-              this.router.navigate(['/sessions/signin']);
-              this.snack.open('Link has been expired', 'OK', {duration: 4000});
+              this.successResetPass = true;
+              this.messageToDisplay = 'Link has been expired';
             }
           }
         );
@@ -79,13 +81,14 @@ export class ChangePasswordComponent implements OnInit {
     this.userService.changePasswordByToken(this.token, signinData).subscribe(
       (response: ResponseBuilderModel) => {
         if (response.code === + this.responseCodeConfig.SUCCESS) {
-          this.authService.signOut();
-          this.snack.open('Password Changed Successfully', 'OK', {duration: 4000});
+          this.authService.signOutWithoutRedirect();
+          this.messageToDisplay = 'Password Updated Successfully';
+          this.successResetPass = true;
         } else if (response.code === + this.responseCodeConfig.PARAMETERS_VALIDATION_ERROR) {
           this.svcGlobal.checkValidationResults(this.signinForm, response.data);
         } else {
-          this.router.navigate(['/sessions/signin']);
-          this.snack.open('Link has been expired', 'OK', {duration: 4000});
+          this.messageToDisplay = 'Link has been expired';
+          this.successResetPass = true;
         }
         this.progressBar.mode = 'determinate';
         this.submitButton.disabled = false;

@@ -1,8 +1,8 @@
 {
   "API_CONFIG": {
     "API_PROTOCOL": "http",
-    "API_IP": "localhost",
-    "API_PORT": "8084",
+    "API_IP": "35.229.113.142",
+    "API_PORT": "9090",
     "API_PATH": "CiterneApp"
   },
   "WEB_CONFIG": {
