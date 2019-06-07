@@ -22,6 +22,7 @@ import {NgxEventImagesPopupComponent} from './ngx-event-images-popup/ngx-event-i
 export class EventsComponent implements OnInit {
   public items: ProfileModel[];
   apiConfig;
+  timeGMTPlus = 0;
   modelLoaded = 0;
   currentPage = 1;
   itemsPerPage = 9;
@@ -41,6 +42,7 @@ export class EventsComponent implements OnInit {
     private svcGlobal: GlobalService
   ) {
     this.apiConfig = this.svcGlobal.getSession('RESPONSE_CODE');
+    this.timeGMTPlus = this.svcGlobal.getSession('TIME_GMT_PLUS');
   }
 
   ngOnInit () {
@@ -204,6 +206,12 @@ export class EventsComponent implements OnInit {
           );
         }
       });
+  }
+
+  millisecondsToDate (milliseconds) {
+    const date = new Date(milliseconds);
+    date.setHours(date.getHours() - this.timeGMTPlus);
+    return date.getTime();
   }
 
 }

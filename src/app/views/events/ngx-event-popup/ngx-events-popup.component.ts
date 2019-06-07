@@ -22,6 +22,7 @@ export class NgxEventsPopupComponent implements OnInit, AfterViewInit {
   eventClassCastAndCreditsExists = true;
   eventClassSchedulesExists = true;
   eventClassMediasExists = true;
+  timeGMTPlus = 0;
 
   constructor (
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -33,6 +34,7 @@ export class NgxEventsPopupComponent implements OnInit, AfterViewInit {
     private cdr: ChangeDetectorRef,
     private snack: MatSnackBar) {
     this.apiConfig = this.svcGlobal.getSession('RESPONSE_CODE');
+    this.timeGMTPlus = this.svcGlobal.getSession('TIME_GMT_PLUS');
   }
 
   get eventClassCastAndCredits () {
@@ -93,7 +95,7 @@ export class NgxEventsPopupComponent implements OnInit, AfterViewInit {
     }
     if (item.eventClassSchedules) {
       for (const schedule of item.eventClassSchedules) {
-        this.addEventClassSchedules(new Date(schedule.showDateTime), false);
+        this.addEventClassSchedules(new Date(this.millisecondsToDate(schedule.showDateTime)), false);
       }
     }
   }
@@ -134,6 +136,12 @@ export class NgxEventsPopupComponent implements OnInit, AfterViewInit {
     this.eventClassSchedules.push(this.fb.group({showDateTime: [showDateTimeValue, Validators.required]}));
   }
 
+  millisecondsToDate (milliseconds) {
+    const date = new Date(milliseconds);
+    date.setHours(date.getHours() - this.timeGMTPlus);
+    return date.getTime();
+  }
+
   deleteEventClassSchedules (index) {
     this.eventClassSchedules.removeAt(index);
   }
@@ -160,6 +168,7 @@ export class NgxEventsPopupComponent implements OnInit, AfterViewInit {
       for (let i = 0; i < data.eventClassSchedules.length; i ++) {
         const newDate = new Date(data.eventClassSchedules[i].showDateTime);
         newDate.setSeconds(0);
+        newDate.setHours(newDate.getHours() + this.timeGMTPlus);
         data.eventClassSchedules[i].showDateTime = newDate;
       }
       data.eventClassType = 1;
@@ -172,8 +181,20 @@ export class NgxEventsPopupComponent implements OnInit, AfterViewInit {
               this.dialogRef.close(responseBuilder.data.eventClass);
               this.snack.open('Event Added Successfully', 'OK', {duration: 4000});
             } else if (responseBuilder.code === + this.apiConfig.PARAMETERS_VALIDATION_ERROR) {
+              for (let i = 0; i < data.eventClassSchedules.length; i ++) {
+                const newDate = new Date(data.eventClassSchedules[i].showDateTime);
+                newDate.setSeconds(0);
+                newDate.setHours(newDate.getHours() - this.timeGMTPlus);
+                data.eventClassSchedules[i].showDateTime = newDate;
+              }
               this.svcGlobal.checkValidationResults(this.itemForm, responseBuilder.data);
             } else {
+              for (let i = 0; i < data.eventClassSchedules.length; i ++) {
+                const newDate = new Date(data.eventClassSchedules[i].showDateTime);
+                newDate.setSeconds(0);
+                newDate.setHours(newDate.getHours() - this.timeGMTPlus);
+                data.eventClassSchedules[i].showDateTime = newDate;
+              }
               this.snack.open('Error', 'OK', {duration: 4000});
             }
           }
@@ -187,8 +208,20 @@ export class NgxEventsPopupComponent implements OnInit, AfterViewInit {
               this.dialogRef.close(responseBuilder.data);
               this.snack.open('Event Updated Successfully', 'OK', {duration: 4000});
             } else if (responseBuilder.code === + this.apiConfig.PARAMETERS_VALIDATION_ERROR) {
+              for (let i = 0; i < data.eventClassSchedules.length; i ++) {
+                const newDate = new Date(data.eventClassSchedules[i].showDateTime);
+                newDate.setSeconds(0);
+                newDate.setHours(newDate.getHours() - this.timeGMTPlus);
+                data.eventClassSchedules[i].showDateTime = newDate;
+              }
               this.svcGlobal.checkValidationResults(this.itemForm, responseBuilder.data);
             } else {
+              for (let i = 0; i < data.eventClassSchedules.length; i ++) {
+                const newDate = new Date(data.eventClassSchedules[i].showDateTime);
+                newDate.setSeconds(0);
+                newDate.setHours(newDate.getHours() - this.timeGMTPlus);
+                data.eventClassSchedules[i].showDateTime = newDate;
+              }
               this.snack.open('Error', 'OK', {duration: 4000});
             }
           }

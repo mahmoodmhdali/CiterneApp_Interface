@@ -11,7 +11,6 @@ import {EventClassTypeService} from '../../shared/services/database-services/eve
 import {EventClassCategoryService} from '../../shared/services/database-services/eventClassCategory.service';
 import {forkJoin} from 'rxjs';
 import {ProfilesService} from '../../shared/services/database-services/profiles.service';
-import {NgxEventImagesPopupComponent} from '../events/ngx-event-images-popup/ngx-event-images-popup.component';
 import {NgxClassImagesPopupComponent} from './ngx-class-images-popup/ngx-class-images-popup.component';
 
 @Component({
@@ -29,6 +28,7 @@ export class ClassesComponent implements OnInit {
   totalItems = 0;
   recordsPerPageValue = 10;
   loadingIndicator = false;
+  timeGMTPlus = 0;
 
   constructor (
     private dialog: MatDialog,
@@ -42,6 +42,7 @@ export class ClassesComponent implements OnInit {
     private svcGlobal: GlobalService
   ) {
     this.apiConfig = this.svcGlobal.getSession('RESPONSE_CODE');
+    this.timeGMTPlus = this.svcGlobal.getSession('TIME_GMT_PLUS');
   }
 
   ngOnInit () {
@@ -205,5 +206,11 @@ export class ClassesComponent implements OnInit {
           );
         }
       });
+  }
+
+  millisecondsToDate (milliseconds) {
+    const date = new Date(milliseconds);
+    date.setHours(date.getHours() - this.timeGMTPlus);
+    return date.getTime();
   }
 }

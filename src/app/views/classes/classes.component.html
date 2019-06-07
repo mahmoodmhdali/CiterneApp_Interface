@@ -43,7 +43,7 @@
           {{ row?.eventClassSchedules[0].classDayIndex == 5 ? 'Friday' : '' }}
           {{ row?.eventClassSchedules[0].classDayIndex == 6 ? 'Saturday' : '' }}
           {{ row?.eventClassSchedules[0].classDayIndex == 7 ? 'Sunday' : '' }}
-          {{ row?.eventClassSchedules[0].time | date:'shortTime' }}
+          {{ millisecondsToDate(row?.eventClassSchedules[0].time) | date:'shortTime' }}
           {{ row?.eventClassSchedules.length > 1 ? ' & ' : '' }}
           {{ row?.eventClassSchedules.length > 1 ?
           row?.eventClassSchedules.length - 1 + ' Other' : '' }} {{row?.eventClassSchedules.length > 2 ? 's':''}}
